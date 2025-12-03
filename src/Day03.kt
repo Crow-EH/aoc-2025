@@ -17,8 +17,7 @@ fun main() {
     }
 
     fun part2(input: List<List<Int>>): Long {
-        return input.map { bank ->
-
+        return input.sumOf { bank ->
             print("$bank -> ")
             val bankResult = (1..12).fold(Pair(0L, -1)) { (total, prevIdx), digit ->
                 val bankAfterPrevWithSpace = bank.subList(prevIdx + 1, bank.size - 12 + digit)
@@ -30,8 +29,7 @@ fun main() {
             }
             println("-> ${bankResult.first}")
             bankResult.first
-
-        }.reduce { accumulator, value -> accumulator + value }
+        }
 
     }
 
