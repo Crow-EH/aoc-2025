@@ -1,9 +1,16 @@
 plugins {
     kotlin("jvm") version "2.2.21"
+    application
 }
 
 kotlin {
     jvmToolchain(21)
+}
+
+application {
+    val day = findProperty("day") ?: "01"
+    println("Running day $day")
+    mainClass.set("Day${day}Kt")
 }
 
 sourceSets {
