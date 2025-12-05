@@ -14,16 +14,14 @@ fun main() {
                 values
             } else {
                 val digits = len / 2
-                val tenMultBelowIncl = 10.toDouble().pow(digits - 1).toLong()
-                val nearestTenMultAbove = 10.toDouble().pow(digits).toLong()
-                values + (tenMultBelowIncl..<nearestTenMultAbove).fold(longArrayOf()) { acc, half ->
-                    val candidate = half.toString().repeat(2).toLong()
-                    if (candidate in min..max) {
-                        acc + candidate
-                    } else {
-                        acc
+                values + (10.toDouble().pow(digits - 1).toLong()..<10.toDouble().pow(digits).toLong())
+                    .fold(longArrayOf()) { acc, half ->
+                        val candidate = half.toString().repeat(2).toLong()
+                        when {
+                            candidate in min..max -> acc + candidate
+                            else -> acc
+                        }
                     }
-                }
             }
         }
     }
@@ -33,15 +31,11 @@ fun main() {
             val from = fromTo.first
             val to = fromTo.second
             val invalidValues = getPossibleInvalidValues1(from.length, to.length, from.toLong(), to.toLong())
-            println("from $from to $to")
             if (invalidValues.isEmpty()) {
-                println("nothing")
                 acc
             } else {
-                invalidValues.forEach { println(it) }
                 val invalidSum = invalidValues.sum()
                 val newAcc = acc + invalidSum
-                println("sum : $acc + $invalidSum = $newAcc")
                 newAcc
             }
         }
@@ -58,16 +52,14 @@ fun main() {
             } else {
                 values + getProperDivisors(len).flatMap { digits ->
                     val repeat = len / digits
-                    val tenMultBelowIncl = 10.toDouble().pow(digits - 1).toLong()
-                    val nearestTenMultAbove = 10.toDouble().pow(digits).toLong()
-                    (tenMultBelowIncl..<nearestTenMultAbove).fold(longArrayOf()) { acc, part ->
-                        val candidate = part.toString().repeat(repeat).toLong()
-                        if (candidate in min..max) {
-                            acc + candidate
-                        } else {
-                            acc
-                        }
-                    }.toList()
+                    (10.toDouble().pow(digits - 1).toLong()..<10.toDouble().pow(digits).toLong())
+                        .fold(longArrayOf()) { acc, part ->
+                            val candidate = part.toString().repeat(repeat).toLong()
+                            when {
+                                candidate in min..max -> acc + candidate
+                                else -> acc
+                            }
+                        }.toList()
                 }
             }
         }.distinct()
@@ -78,15 +70,11 @@ fun main() {
             val from = fromTo.first
             val to = fromTo.second
             val invalidValues = getPossibleInvalidValues2(from.length, to.length, from.toLong(), to.toLong())
-            println("from $from to $to")
             if (invalidValues.isEmpty()) {
-                println("nothing")
                 acc
             } else {
-                invalidValues.forEach { println(it) }
                 val invalidSum = invalidValues.sum()
                 val newAcc = acc + invalidSum
-                println("sum : $acc + $invalidSum = $newAcc")
                 newAcc
             }
         }

@@ -16,12 +16,10 @@ fun main() {
     fun part2(input: Pair<List<LongRange>, List<Long>>): Long {
         return input.first.sortedBy { it.first }
             .fold(Acc(0, 0)) { acc, range ->
-                if (range.last <= acc.last) {
-                    acc
-                } else if (range.first <= acc.last) {
-                    Acc(acc.count + range.last - acc.last, range.last)
-                } else {
-                    Acc(acc.count + range.last - range.first + 1, range.last)
+                when {
+                    acc.last >= range.last -> acc
+                    acc.last >= range.first -> Acc(acc.count + range.last - acc.last, range.last)
+                    else -> Acc(acc.count + range.last - range.first + 1, range.last)
                 }
             }.count
     }

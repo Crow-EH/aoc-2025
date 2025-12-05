@@ -45,12 +45,7 @@ fun main() {
                             grid.getOrElse(adjY) { emptyLine }
                                 .getOrElse(adjX) { 0 }
                         }
-                    if (count < 4) {
-                        removed++
-                        0
-                    } else {
-                        1
-                    }
+                    if (count < 4) 0.also { removed++ } else 1
                 } else {
                     0
                 }

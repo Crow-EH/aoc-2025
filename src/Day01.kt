@@ -5,12 +5,10 @@ fun main() {
     fun parse(input: String): Int {
         val direction = input.substring(0..<1)
         val clicks = input.substringAfter(direction).toInt()
-        if (direction == "L") {
-            println("$input ${-clicks}")
-            return -clicks
+        return if (direction == "L") {
+            -clicks
         } else {
-            println("$input $clicks")
-            return clicks
+            clicks
         }
     }
 
@@ -19,12 +17,10 @@ fun main() {
             val raw = pos + clicks
             val newPos = raw.mod(100)
             val newZs = if (newPos == 0) zs + 1 else zs
-            println("$pos + $clicks = $raw -> $newPos / $zs -> $newZs")
             Pair(
                 newZs, newPos
             )
         }
-        println(result)
         return result.first
     }
 
