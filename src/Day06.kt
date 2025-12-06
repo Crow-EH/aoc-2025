@@ -8,7 +8,7 @@ fun main() {
         .map { line -> line.split(" ").filter { it != "" } }
         .transpose()
         .sumOf { problem ->
-          when (problem[problem.size - 1]) {
+          when (problem.last()) {
             ADD.toString() -> problem.dropLast(1).sumOf { it.toLong() }
             MULTIPLY.toString() -> problem.dropLast(1).fold(1) { acc, n -> acc * n.toLong() }
             else -> error("YOU DARE LIE TO ME ?!")
