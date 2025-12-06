@@ -19,22 +19,18 @@ fun main() {
   fun part2(input: List<String>): Long {
     return input
         .transpose { it != ' ' }
-        .foldRight(Pair(mutableListOf<Long>(), 0L)) { column, (numbers, total) ->
+        .foldRight(Pair(emptyList<Long>(), 0L)) { column, (numbers, total) ->
           when {
             column.isEmpty() -> Pair(numbers, total)
-            column.last() !in validOperators -> {
-              val number = column.joinToString("").toLong()
-              numbers.add(number)
-              Pair(numbers, total)
-            }
+            column.last() !in validOperators ->
+                Pair(numbers + column.joinToString("").toLong(), total)
             else -> {
-              val number = column.dropLast(1).joinToString("").toLong()
-              numbers.add(number)
+              val finalNumbers = numbers + column.dropLast(1).joinToString("").toLong()
               Pair(
-                  mutableListOf(),
+                  emptyList(),
                   when (column.last()) {
-                    ADD -> total + numbers.sum()
-                    MULTIPLY -> total + numbers.fold(1L) { acc, n -> acc * n }
+                    ADD -> total + finalNumbers.sum()
+                    MULTIPLY -> total + finalNumbers.fold(1L) { acc, n -> acc * n }
                     else -> total
                   },
               )
