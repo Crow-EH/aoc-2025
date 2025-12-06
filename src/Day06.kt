@@ -22,18 +22,18 @@ fun main() {
         .foldRight(Pair(emptyList<Long>(), 0L)) { column, (numbers, total) ->
           when {
             column.isEmpty() -> Pair(numbers, total)
-            column.last() !in validOperators ->
-                Pair(numbers + column.joinToString("").toLong(), total)
+            column.last() !in validOperators -> {
+              Pair(numbers + column.joinToString("").toLong(), total)
+            }
             else -> {
               val finalNumbers = numbers + column.dropLast(1).joinToString("").toLong()
-              Pair(
-                  emptyList(),
+              val newTotal =
                   when (column.last()) {
                     ADD -> total + finalNumbers.sum()
                     MULTIPLY -> total + finalNumbers.fold(1L) { acc, n -> acc * n }
                     else -> total
-                  },
-              )
+                  }
+              Pair(emptyList(), newTotal)
             }
           }
         }
