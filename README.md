@@ -29,4 +29,11 @@ If you're stuck with Kotlin-specific questions or anything related to this templ
 ```bash
 gradle run -Pday=01
 ```
-Replace `01` with any day that match a `Day<day>.kt` file.
+`day`: Any day that matches a `Day<day>.kt` file. Default: `01`
+
+
+## Format Code
+```bash
+gradle spotlessApply
+```
+Or use a [ktfmt](https://github.com/facebook/ktfmt) plugin from your IDE.

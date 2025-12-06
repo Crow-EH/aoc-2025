@@ -1,30 +1,21 @@
 plugins {
-    kotlin("jvm") version "2.3.0-RC2"
-    application
+  kotlin("jvm") version "2.3.0-RC2"
+  application
+  id("com.diffplug.spotless") version "8.1.0"
 }
 
-kotlin {
-    jvmToolchain(25)
-}
+kotlin { jvmToolchain(25) }
 
 application {
-    val day = findProperty("day") ?: "01"
-    println("Running day $day")
-    mainClass.set("Day${day}Kt")
+  val day = findProperty("day") ?: "01"
+  println("Running day $day")
+  mainClass.set("Day${day}Kt")
 }
 
-sourceSets {
-    main {
-        kotlin.srcDir("src")
-    }
-}
+sourceSets { main { kotlin.srcDir("src") } }
 
-tasks {
-    wrapper {
-        gradleVersion = "9.2.1"
-    }
-}
+tasks { wrapper { gradleVersion = "9.2.1" } }
 
-dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-}
+dependencies { implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2") }
+
+spotless { kotlin { ktfmt() } }
