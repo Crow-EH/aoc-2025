@@ -14,3 +14,21 @@ fun String.md5() =
 
 /** The cleaner shorthand for printing output. */
 fun Any?.println() = println(this)
+
+fun <T> List<List<T>>.transpose(cellFilter: (T) -> Boolean): List<List<T>> {
+  return this[0].indices.map { x -> this.indices.map { y -> this[y][x] }.filter(cellFilter) }
+}
+
+fun <T> List<List<T>>.transpose(): List<List<T>> {
+  return transpose { true }
+}
+
+@JvmName("transposeCharSequences")
+fun List<CharSequence>.transpose(cellFilter: (Char) -> Boolean): List<List<Char>> {
+  return this[0].indices.map { x -> this.indices.map { y -> this[y][x] }.filter(cellFilter) }
+}
+
+@JvmName("transposeCharSequences")
+fun List<CharSequence>.transpose(): List<List<Char>> {
+  return transpose { true }
+}

@@ -1,68 +1,47 @@
+const val ADD = '+'
+const val MULTIPLY = '*'
+val validOperators = arrayOf(ADD, MULTIPLY)
+
 fun main() {
   fun part1(input: List<String>): Long {
     return input
-        .fold(mutableListOf<MutableList<String>>()) { acc, line ->
-          line
-              .split(" ")
-              .filter { it != "" }
-              .forEachIndexed { index, string ->
-                if (acc.size == index) {
-                  acc.add(mutableListOf())
-                }
-                acc[index].add(string)
-              }
-          acc
-        }
+        .map { line -> line.split(" ").filter { it != "" } }
+        .transpose()
         .sumOf { problem ->
           when (problem[problem.size - 1]) {
-            "+" -> problem.dropLast(1).sumOf { it.toLong() }
-            "*" -> problem.dropLast(1).fold(1) { acc, n -> acc * n.toLong() }
+            ADD.toString() -> problem.dropLast(1).sumOf { it.toLong() }
+            MULTIPLY.toString() -> problem.dropLast(1).fold(1) { acc, n -> acc * n.toLong() }
             else -> error("YOU DARE LIE TO ME ?!")
           }
         }
   }
 
-  data class Problem(val numbers: MutableList<Long>, val operator: Char)
   fun part2(input: List<String>): Long {
     return input
-        .fold(mutableListOf<MutableList<Char>>()) { acc, line ->
-          line
-              .map { it }
-              .forEachIndexed { index, char ->
-                if (acc.size == index) {
-                  acc.add(mutableListOf())
-                }
-                if (char != ' ') acc[index].add(char)
-              }
-          acc
-        }
-        .fold(mutableListOf<Problem>()) { problems, column ->
+        .transpose { it != ' ' }
+        .foldRight(Pair(mutableListOf<Long>(), 0L)) { column, (numbers, total) ->
           when {
-            column.isEmpty() -> problems
+            column.isEmpty() -> Pair(numbers, total)
+            column.last() !in validOperators -> {
+              val number = column.joinToString("").toLong()
+              numbers.add(number)
+              Pair(numbers, total)
+            }
             else -> {
-              val (currentProblem, digits) =
+              val number = column.dropLast(1).joinToString("").toLong()
+              numbers.add(number)
+              Pair(
+                  mutableListOf(),
                   when (column.last()) {
-                    '+',
-                    '*' -> {
-                      val newProblem = Problem(mutableListOf(), column.last())
-                      problems.add(newProblem)
-                      Pair(newProblem, column.dropLast(1))
-                    }
-                    else -> Pair(problems.last(), column)
-                  }
-              val number = digits.joinToString("").toLong()
-              currentProblem.numbers.add(number)
-              problems
+                    ADD -> total + numbers.sum()
+                    MULTIPLY -> total + numbers.fold(1L) { acc, n -> acc * n }
+                    else -> total
+                  },
+              )
             }
           }
         }
-        .sumOf { problem ->
-          when (problem.operator) {
-            '+' -> problem.numbers.sum()
-            '*' -> problem.numbers.fold(1) { acc, n -> acc * n }
-            else -> error("YOU DARE LIE TO ME ?!")
-          }
-        }
+        .second
   }
 
   val testInput = readInput("Day06_test")
