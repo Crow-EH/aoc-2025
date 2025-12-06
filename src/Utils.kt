@@ -26,6 +26,13 @@ fun <T> List<List<T>>.transpose(cellFilter: (T) -> Boolean) =
 fun <T> List<List<T>>.transpose() = transpose { true }
 
 /** Transpose matrix (y of x -> x of y) and filter cells */
+inline fun <reified T> Array<Array<T>>.transpose(cellFilter: (T) -> Boolean) =
+    Array(this[0].size) { x -> Array(this.size) { y -> this[y][x] }.filter(cellFilter) }
+
+/** Transpose matrix (y of x -> x of y) */
+inline fun <reified T> Array<Array<T>>.transpose() = transpose { true }
+
+/** Transpose matrix (y of x -> x of y) and filter cells */
 @JvmName("transposeCharSequences")
 fun List<CharSequence>.transpose(cellFilter: (Char) -> Boolean) =
     this[0].indices.map { x -> this.indices.map { y -> this[y][x] }.filter(cellFilter) }
