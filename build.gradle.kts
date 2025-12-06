@@ -6,15 +6,19 @@ plugins {
 
 kotlin { jvmToolchain(25) }
 
-application {
-  val day = findProperty("day") ?: "01"
-  println("Running day $day")
-  mainClass.set("Day${day}Kt")
-}
+val day = findProperty("day") ?: "01"
+
+application { mainClass.set("Day${day}Kt") }
 
 sourceSets { main { kotlin.srcDir("src") } }
 
-tasks { wrapper { gradleVersion = "9.2.1" } }
+tasks {
+  wrapper { gradleVersion = "9.2.1" }
+  this.getByName("run") {
+    val text = "Running day $day"
+    doFirst { println(text) }
+  }
+}
 
 dependencies { implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2") }
 
