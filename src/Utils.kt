@@ -40,3 +40,14 @@ fun List<CharSequence>.transpose(cellFilter: (Char) -> Boolean) =
 /** Transpose matrix (y of x -> x of y) */
 @JvmName("transposeCharSequences")
 fun List<CharSequence>.transpose(): List<List<Char>> = transpose { true }
+
+fun <E> MutableIterable<E>.removeFirst(predicate: (E) -> Boolean): E? {
+    val iterator = iterator()
+    for (value in iterator) {
+        if (predicate(value)) {
+            iterator.remove()
+            return value
+        }
+    }
+    return null
+}
