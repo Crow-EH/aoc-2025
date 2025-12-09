@@ -16,7 +16,10 @@ fun String.md5() =
 fun Any?.println() = println(this)
 
 /** Shorthand that print then pass the value back */
-fun <T> T.peekPrint() = println(this).let { this }
+fun <T> T.peekPrint() = print("$this ").let { this }
+
+/** Shorthand that print then pass the value back */
+fun <T> T.peekPrintln() = println(this).let { this }
 
 /** Transpose matrix (y of x -> x of y) and filter cells */
 fun <T> List<List<T>>.transpose(cellFilter: (T) -> Boolean) =
@@ -42,12 +45,12 @@ fun List<CharSequence>.transpose(cellFilter: (Char) -> Boolean) =
 fun List<CharSequence>.transpose(): List<List<Char>> = transpose { true }
 
 fun <E> MutableIterable<E>.removeFirst(predicate: (E) -> Boolean): E? {
-    val iterator = iterator()
-    for (value in iterator) {
-        if (predicate(value)) {
-            iterator.remove()
-            return value
-        }
+  val iterator = iterator()
+  for (value in iterator) {
+    if (predicate(value)) {
+      iterator.remove()
+      return value
     }
-    return null
+  }
+  return null
 }
